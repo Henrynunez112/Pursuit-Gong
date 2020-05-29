@@ -22,6 +22,35 @@ app.set('port', port);
 var server = http.createServer(app);
 
 /**
+ * Web Socket Server setup
+ */
+var WebSocket = require('ws')
+var wss = new WebSocket.Server({ server })
+
+const sendTo = (socket, data) => {
+  socket.send(JSON.stringify(data))
+}
+
+wss.on('connection', (ws) => {
+  ws.on('message', (data) => {
+    const parsed = JSON.parse(data)
+    console.log('received ->', parsed)
+    wss.clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) {
+        sendTo(client, {
+          message: 'ALLOW_RING_GONG',
+          payload: {
+            fellowName: parsed.fellowName
+          }
+        })
+      }
+    })
+  })
+
+  sendTo(ws, { message: 'CLIENT_CONNECTED' })
+})
+
+/**
  * Listen on provided port, on all network interfaces.
  */
 

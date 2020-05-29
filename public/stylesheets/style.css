@@ -12,9 +12,9 @@ body {
 }
 
 #img-gong:hover {
-    cursor: url('small-bat.png'), pointer;
+    cursor: url('/images/small-bat.png'), pointer;
 }
-#box {
+#gong-screen {
     display: flex;
     flex-direction: column;
     align-items: center;

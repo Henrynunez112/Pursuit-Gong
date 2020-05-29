@@ -12,12 +12,18 @@
 
     <body>
         <div id="container">
-            <div id="box">
+            <div id="welcome-screen">
+                <h1 class="title">Welcome to Pursuit's Gong Ceremony</h1>
+                <p>Since long ago Pursuit fellows have rang the gong when they attain their first job as developers.</p>
+                <p>You are about to experience this celebration. Thank you for joining us!</p>
+                <button id="start">Start</button>
+            </div>
+            <div id="gong-screen">
                 <h1 class="title">Ring a Gong</h1>
                 <img src="/images/gong.png" alt="Gong photo" id="img-gong">
                 <!-- <button id="play-gong">Play</button> -->
                 <button id="stop-gong">Stop</button>
-                <audio src="/sounds/gong.mp3" id="audio"></audio>
+                <audio src="/sounds/gong.mp3" id="audio" preload="automatic"></audio>
             </div>
         </div>
         <script src="/javascripts/script.js"></script>
