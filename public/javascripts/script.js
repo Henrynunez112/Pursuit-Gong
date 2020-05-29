@@ -33,6 +33,7 @@ const ringGongEffect = () => {
   confetti.start(100000, 500);
   gong.classList.add('shake');
 }
+
 const launchQuestionnaire = () => {
   let ringer = window.confirm('Are you a Fellow that will ring the Gong today?\nYes = [OK]\nNo  = [Cancel]')
   if (ringer) {
@@ -68,6 +69,8 @@ gong.addEventListener('click', () => {
       fellowName,
       password
     })
+  } else {
+    alert("You can't ring the gong")
   }
 })
 
@@ -95,7 +98,8 @@ ws.onmessage = (e) => {
       break;
     case "REJECT_FELLOW":
     case "DENY_GONG_RING":
-      window.alert(message)
+      // window.alert(message)
+      alert("You can't ring the gong. Wait for somebody to ring it")
   }
 }
 
