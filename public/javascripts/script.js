@@ -1,4 +1,4 @@
-console.log(`Made by: Jenesh`)
+console.log(`Made by: Jenesh & Alejo`)
 const gong = document.querySelector('#img-gong')
 const welcomeScreen = document.querySelector('#welcome-screen')
 const gongScreen = document.querySelector('#gong-screen')
@@ -7,7 +7,7 @@ const startBtn = document.querySelector('#start')
 const audio = document.querySelector('#audio')
 
 // Gong Screen should start hidden
-gongScreen.hidden = true;
+gongScreen.classList.add("hidden");
 
 // Required for Safari since audio playback
 // needs to be initiated by a user event
@@ -33,15 +33,42 @@ const ringGongEffect = () => {
   confetti.start(100000, 500);
   gong.classList.add('shake');
 }
+const launchQuestionnaire = () => {
+  let ringer = window.confirm('Are a Fellow that is ringing the Gong?\nYes = [OK]\nNo  = [Cancel]')
+  if (ringer) {
+    let fellowName = window.prompt('Type your name')
+    if (fellowName) {
+      let password = window.prompt('What is the secret password?')
+      if (password) {
+        sendToSocket({
+          type: "VERIFY_FELLOW",
+          password,
+          fellowName
+        })
+        localStorage.setItem('fellowName', fellowName)
+        localStorage.setItem('password', password)
+      }
+    }
+  }
+}
 
 startBtn.addEventListener('click', () => {
   initiateAudio()
-  welcomeScreen.hidden = true;
-  gongScreen.hidden = false;
+  launchQuestionnaire()
+  welcomeScreen.classList.add("hidden")
+  gongScreen.classList.remove("hidden");
 })
 
 gong.addEventListener('click', () => {
-  sendToSocket({ fellowName: 'Alejo', password: "1234" })
+  const fellowName = localStorage.getItem('fellowName')
+  const password = localStorage.getItem('password')
+  if (fellowName && password) {
+    sendToSocket({
+      type: "REQUEST_GONG_RING",
+      fellowName,
+      password
+    })
+  }
 })
 
 stopBtn.addEventListener('click', () => {
@@ -59,13 +86,16 @@ const sendToSocket = (payload) => {
 }
 
 ws.onmessage = (e) => {
-  const data = JSON.parse(e.data)
+  const { type, message } = JSON.parse(e.data)
 
-  console.log(e)
-  switch (data.message) {
-    case "ALLOW_RING_GONG":
+  console.log(type, message)
+  switch (type) {
+    case "ALLOW_GONG_RING":
       ringGongEffect()
       break;
+    case "REJECT_FELLOW":
+    case "DENY_GONG_RING":
+      window.alert(message)
   }
 }
 

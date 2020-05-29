@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+// Load env variables
+require('dotenv').config()
+
 /**
  * Module dependencies.
  */
@@ -33,18 +36,43 @@ const sendTo = (socket, data) => {
 
 wss.on('connection', (ws) => {
   ws.on('message', (data) => {
-    const parsed = JSON.parse(data)
-    console.log('received ->', parsed)
-    wss.clients.forEach(client => {
-      if (client.readyState === WebSocket.OPEN) {
-        sendTo(client, {
-          message: 'ALLOW_RING_GONG',
-          payload: {
-            fellowName: parsed.fellowName
-          }
-        })
-      }
-    })
+    const { type, fellowName, password } = JSON.parse(data)
+    const gongPassword = process.env.GONG_PASSWORD
+    console.log('received ->', type, fellowName, password)
+    switch (type) {
+      case "VERIFY_FELLOW":
+        if (password === gongPassword) {
+          sendTo(ws, {
+            type: "WELCOME_FELLOW",
+            message: `Congratulations ${fellowName}. The gong is enabled for you if you click it it will ring.`
+          })
+        } else {
+          sendTo(ws, {
+            type: "REJECT_FELLOW",
+            message: `😥️ It seems like you don't know the password ${fellowName}. Make sure to check for spelling mistakes. Try again by refreshing the page. As last resort contact Alejo.`
+          })
+        }
+        break;
+      case "REQUEST_GONG_RING":
+        if (password === gongPassword) {
+          wss.clients.forEach(client => {
+            if (client.readyState === WebSocket.OPEN) {
+              sendTo(client, {
+                type: 'ALLOW_GONG_RING',
+                message: `Congratulations ${fellowName}🎉. There's and exciting career a head of you!`
+              })
+            }
+          })
+        } else {
+          sendTo(ws, {
+            type: 'DENY_GONG_RING',
+            message: `Oh no! ${fellowName} you must have had a wrong password`
+          })
+        }
+        break;
+      default:
+        break;
+    }
   })
 
   sendTo(ws, { message: 'CLIENT_CONNECTED' })
