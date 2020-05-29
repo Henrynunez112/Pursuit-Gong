@@ -13,18 +13,30 @@
     <body>
         <div id="container">
             <div id="welcome-screen">
-                <h1 class="title">Welcome to Pursuit's Gong Ceremony</h1>
-                <p>Since long ago Pursuit fellows have rang the gong when they attain their first job as developers.</p>
-                <p>You are about to experience this celebration. Thank you for joining us!</p>
-                <button id="start">Start</button>
+                <div class="content">
+                    <h1 class="title">Welcome to Pursuit's Gong Ceremony</h1>
+                    <p>Since long ago Pursuit fellows have rang the gong when they attain their first job as developers
+                        in
+                        the tech industry.</p>
+                    <p>You are about to experience this celebration. Thank you for joining us!</p>
+                    <button class="btn" id="start">Enter</button>
+                </div>
             </div>
             <div id="gong-screen">
-                <h1 class="title">Ring a Gong</h1>
-                <img src="/images/gong.png" alt="Gong photo" id="img-gong">
-                <!-- <button id="play-gong">Play</button> -->
-                <button id="stop-gong">Stop</button>
-                <audio src="/sounds/gong.mp3" id="audio" preload="automatic"></audio>
+                <div class="content">
+                    <h1 class="title">Ring a Gong</h1>
+                    <img src="/images/gong.png" alt="Gong photo" id="img-gong">
+                    <button id="stop-gong" class="btn">Stop</button>
+                    <audio src="/sounds/gong.mp3" id="audio" preload="automatic"></audio>
+                </div>
             </div>
+            <div class="footer">
+                <img id="pursuit-logo"
+                    src="https://images.squarespace-cdn.com/content/5b50ebb7e749401857e16f2f/1533931951492-G6NADOBZ39AI754BPBFJ/pursuit-white.png?content-type=image%2Fpng"
+                    alt="pursuit-logo" />
+            </div>
+
+
         </div>
         <script src="/javascripts/script.js"></script>
     </body>
