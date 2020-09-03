@@ -81,7 +81,8 @@ stopBtn.addEventListener('click', () => {
   gong.classList.remove('shake');
 })
 
-let ws = new WebSocket(`ws://${location.host}`)
+const WS_PROTOCOL = location.protocol === 'https:' ? 'wss' : 'ws'
+let ws = new WebSocket(`${WS_PROTOCOL}://${location.host}`)
 
 const sendToSocket = (payload) => {
   let data = JSON.stringify(payload)
