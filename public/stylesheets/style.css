@@ -56,7 +56,7 @@ body {
 }
 
 #img-gong:hover {
-    cursor: url('/images/small-bat.png'), pointer;
+    cursor: url('/images/mallet.png'), pointer;
 }
 
 #welcome-screen, #gong-screen {
