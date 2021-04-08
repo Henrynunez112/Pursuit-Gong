@@ -10,8 +10,10 @@ body {
     color:  #ffffff;
 }
 
-h1 {
+.header1 {
     font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    color: #EDFF00;
 }
 
 #welcome-screen p {
@@ -21,11 +23,6 @@ h1 {
 #welcome-screen {
     display: flex;
     flex-direction: column;
-}
-
-#welcome-screen h1 {
-    text-transform: uppercase;
-    color: #EDFF00; 
 }
 
 #img-gong {

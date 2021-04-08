@@ -38,7 +38,7 @@ const ringGongEffect = () => {
 }
 
 const launchQuestionnaire = () => {
-  let ringer = window.confirm('Are you a Fellow that will ring the Gong today?\nYes = [OK]\nNo  = [Cancel]')
+  let ringer = window.confirm('Are you a fellow ringing the gong today?\nYes = [OK]\nNo  = [Cancel]')
   if (ringer) {
     let fellowName = window.prompt('Type your name')
     if (fellowName) {
