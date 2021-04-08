@@ -5,6 +5,7 @@ const gongScreen = document.querySelector('#gong-screen')
 const stopBtn = document.querySelector('#stop-gong')
 const startBtn = document.querySelector('#start')
 const audio = document.querySelector('#audio')
+const HALF_MINUTE = 1000 * 30;
 
 // Gong Screen should start hidden
 gongScreen.classList.add("hidden");
@@ -30,8 +31,10 @@ const ringGongEffect = () => {
   playAudio()
   confetti.gradient = true;
   confetti.speed = 4;
-  confetti.start(100000, 500);
+  confetti.start(HALF_MINUTE, 500);
   gong.classList.add('shake');
+
+  setTimeout(() => gong.classList.remove('shake'), HALF_MINUTE)
 }
 
 const launchQuestionnaire = () => {
