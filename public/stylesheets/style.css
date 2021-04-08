@@ -7,19 +7,25 @@ body {
     background-color: #4142EA;
     overflow: hidden;
     height: 100vh;
+    color:  #ffffff;
 }
 
 h1 {
     font-family: 'Poppins', sans-serif;
 }
 
-p {
-    font-family: 'Montserrat', sans-serif;
+#welcome-screen p {
+    font-family: 'proxima nova', sans-serif;
 }
 
 #welcome-screen {
     display: flex;
     flex-direction: column;
+}
+
+#welcome-screen h1 {
+    text-transform: uppercase;
+    color: #EDFF00; 
 }
 
 #img-gong {
@@ -35,6 +41,20 @@ p {
     text-align: center;
 }
 
+.footer p {
+    font-family: 'Roboto Mono', monospace;
+    font-size: .7em;
+}
+
+.footer p a {
+    color: #E3E3E3;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+}
+.footer p a:hover {
+    color: #EDFF00;
+
+}
 #img-gong:hover {
     cursor: url('/images/small-bat.png'), pointer;
 }
@@ -55,7 +75,6 @@ p {
 #container {
     height: inherit;
     background-color: #4142EA;
-    color: #EBFF01;
 }
 
 .btn {
