@@ -29,11 +29,20 @@ const playAudio = () => {
 
 const ringGongEffect = () => {
   playAudio()
-  confetti.gradient = true;
-  confetti.speed = 4;
-  confetti.start(HALF_MINUTE, 500);
-  gong.classList.add('shake');
 
+  party.confetti(document.querySelector('#stop-gong'), {
+    count: party.variation.range(100, 200),
+    speed: party.variation.range(500, 1200),
+  });
+
+  setTimeout(() => {
+    party.confetti(document.querySelector('body'), {
+      count: party.variation.range(100, 200),
+      speed: party.variation.range(500, 1200),
+    });
+  }, 1000)
+
+  gong.classList.add('shake');
   setTimeout(() => gong.classList.remove('shake'), HALF_MINUTE)
 }
 
