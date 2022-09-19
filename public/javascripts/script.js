@@ -9,8 +9,8 @@ const audio = document.querySelector("#audio");
 const HALF_MINUTE = 1000 * 30;
 
 // Gong Screen should start hidden
-gongScreen.classList.add("hidden");
 chimeScreen.classList.add("hidden");
+gongScreen.classList.add("hidden");
 
 // Required for Safari since audio playback
 // needs to be initiated by a user event
@@ -74,6 +74,7 @@ startBtn.addEventListener("click", () => {
   launchQuestionnaire();
   welcomeScreen.classList.add("hidden");
   gongScreen.classList.remove("hidden");
+  chimeScreen.classList.remove("hidden");
 });
 
 gong.addEventListener("click", () => {
