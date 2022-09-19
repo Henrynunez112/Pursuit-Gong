@@ -1,14 +1,16 @@
-console.log(`Made by: Jenesh & Alejo`)
-const gong = document.querySelector('#img-gong')
-const welcomeScreen = document.querySelector('#welcome-screen')
-const gongScreen = document.querySelector('#gong-screen')
-const stopBtn = document.querySelector('#stop-gong')
-const startBtn = document.querySelector('#start')
-const audio = document.querySelector('#audio')
+console.log(`Made by: Jenesh & Alejo`);
+const gong = document.querySelector("#img-gong");
+const welcomeScreen = document.querySelector("#welcome-screen");
+const gongScreen = document.querySelector("#gong-screen");
+const chimeScreen = document.querySelector("#chime-screen");
+const stopBtn = document.querySelector("#stop-gong");
+const startBtn = document.querySelector("#start");
+const audio = document.querySelector("#audio");
 const HALF_MINUTE = 1000 * 30;
 
 // Gong Screen should start hidden
 gongScreen.classList.add("hidden");
+chimeScreen.classList.add("hidden");
 
 // Required for Safari since audio playback
 // needs to be initiated by a user event
@@ -18,115 +20,117 @@ gongScreen.classList.add("hidden");
 // https://stackoverflow.com/questions/12804028/safari-with-audio-tag-not-working
 const initiateAudio = () => {
   audio.muted = true;
-  audio.play()
-}
+  audio.play();
+};
 
 const playAudio = () => {
   audio.currentTime = 0;
   audio.muted = false;
-  audio.play()
-}
+  audio.play();
+};
 
 const ringGongEffect = () => {
-  playAudio()
+  playAudio();
 
-  party.confetti(document.querySelector('#stop-gong'), {
+  party.confetti(document.querySelector("#stop-gong"), {
     count: party.variation.range(100, 200),
     speed: party.variation.range(500, 1200),
   });
 
   setTimeout(() => {
-    party.confetti(document.querySelector('body'), {
+    party.confetti(document.querySelector("body"), {
       count: party.variation.range(100, 200),
       speed: party.variation.range(500, 1200),
     });
-  }, 1000)
+  }, 1000);
 
-  gong.classList.add('shake');
-  setTimeout(() => gong.classList.remove('shake'), HALF_MINUTE)
-}
+  gong.classList.add("shake");
+  setTimeout(() => gong.classList.remove("shake"), HALF_MINUTE);
+};
 
 const launchQuestionnaire = () => {
-  let ringer = window.confirm('Are you a Fellow ringing the gong today?\nYes = [OK]\nNo  = [Cancel]')
+  let ringer = window.confirm(
+    "Are you a Fellow ringing the gong today?\nYes = [OK]\nNo  = [Cancel]"
+  );
   if (ringer) {
-    let fellowName = window.prompt('Type your name')
+    let fellowName = window.prompt("Type your name");
     if (fellowName) {
-      let password = window.prompt('What is the secret password?')
+      let password = window.prompt("What is the secret password?");
       if (password) {
         sendToSocket({
           type: "VERIFY_FELLOW",
           password,
-          fellowName
-        })
-        localStorage.setItem('fellowName', fellowName)
-        localStorage.setItem('password', password)
+          fellowName,
+        });
+        localStorage.setItem("fellowName", fellowName);
+        localStorage.setItem("password", password);
       }
     }
   }
-}
+};
 
-startBtn.addEventListener('click', () => {
-  initiateAudio()
-  launchQuestionnaire()
-  welcomeScreen.classList.add("hidden")
+startBtn.addEventListener("click", () => {
+  initiateAudio();
+  launchQuestionnaire();
+  welcomeScreen.classList.add("hidden");
   gongScreen.classList.remove("hidden");
-})
+});
 
-gong.addEventListener('click', () => {
-  const fellowName = localStorage.getItem('fellowName')
-  const password = localStorage.getItem('password')
+gong.addEventListener("click", () => {
+  const fellowName = localStorage.getItem("fellowName");
+  const password = localStorage.getItem("password");
   if (fellowName && password) {
     sendToSocket({
       type: "REQUEST_GONG_RING",
       fellowName,
-      password
-    })
+      password,
+    });
   } else {
-    alert("You can't ring the gong")
+    alert("You can't ring the gong");
   }
-})
+});
 
-stopBtn.addEventListener('click', () => {
+stopBtn.addEventListener("click", () => {
   audio.currentTime = 0;
   audio.pause();
   confetti.remove();
-  gong.classList.remove('shake');
-})
+  gong.classList.remove("shake");
+});
 
-const WS_PROTOCOL = location.protocol === 'https:' ? 'wss' : 'ws'
-let ws = new WebSocket(`${WS_PROTOCOL}://${location.host}`)
+const WS_PROTOCOL = location.protocol === "https:" ? "wss" : "ws";
+let ws = new WebSocket(`${WS_PROTOCOL}://${location.host}`);
 
 const sendToSocket = (payload) => {
-  let data = JSON.stringify(payload)
-  ws.send(data)
-}
+  let data = JSON.stringify(payload);
+  ws.send(data);
+};
 
 ws.onmessage = (e) => {
-  const { type, message } = JSON.parse(e.data)
+  const { type, message } = JSON.parse(e.data);
 
-  console.log(type, message)
+  console.log(type, message);
   switch (type) {
     case "ALLOW_GONG_RING":
-      ringGongEffect()
+      ringGongEffect();
       break;
     case "REJECT_FELLOW":
     case "DENY_GONG_RING":
       // window.alert(message)
-      alert("You can't ring the gong. Wait for somebody to ring it")
+      alert("You can't ring the gong. Wait for somebody to ring it");
   }
-}
+};
 
 ws.onerror = (e) => {
-  window.alert('WebSocket error: Please refresh the page')
-  console.log('WebSocket error', e)
-}
+  window.alert("WebSocket error: Please refresh the page");
+  console.log("WebSocket error", e);
+};
 
 ws.onopen = (e) => {
-  console.log('WebSocket connection stablished', e)
-}
+  console.log("WebSocket connection stablished", e);
+};
 
 ws.onclose = (e) => {
-  window.alert('WebSocket Connection Closed: Please refresh the page')
-  console.log('WebSocket connection closed', e)
-  ws = null
-}
+  window.alert("WebSocket Connection Closed: Please refresh the page");
+  console.log("WebSocket connection closed", e);
+  ws = null;
+};
